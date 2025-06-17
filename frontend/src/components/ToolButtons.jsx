@@ -2,16 +2,17 @@ function ToolButtons({ activeTool, onSelect }) {
   const tools = ["GEC", "Summarization", "Score"];
 
   return (
-    <div className="flex gap-2">
+    <div className="flex justify-center gap-6">
       {tools.map((tool) => (
         <button
           key={tool}
           onClick={() => onSelect(tool)}
-          className={`flex-1 py-2 rounded ${
-            activeTool === tool
-              ? "bg-blue-600 text-white"
-              : "bg-white border text-blue-600"
-          }`}
+          className={`px-8 py-4 rounded-full text-lg font-semibold transition transform hover:scale-105 shadow-lg 
+              ${
+                activeTool === tool
+                  ? "bg-gradient-to-r from-purple-600 to-blue-600 text-white"
+                  : "bg-purple-100 text-purple-700 hover:bg-purple-200"
+              }`}
         >
           {tool}
         </button>
