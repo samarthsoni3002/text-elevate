@@ -1,6 +1,6 @@
 # Text Elevate 🚀
 
-**Text Elevate** is a modern React + Tailwind CSS web app that provides:
+**Text Elevate** is a full stack machine learning web application that provides:
 
 - ✅ Grammar Error Correction (GEC)
 - ✅ Text Summarization (with token limits)
@@ -18,7 +18,7 @@
 
 ### 📊 Grammar Correction Example
 
-![Scorecard](./screenshots/image_gec.png)
+![GEC](./screenshots/image_gec.png)
 
 ### 📝 Summarization Example
 
