@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from app.services import paragraph_scorer, text_completion, text_summarization
+from app.services import paragraph_scorer, text_completion, text_summarization,gec
 
 router = APIRouter()
 
@@ -37,3 +37,19 @@ def summarize(request: SummaryRequest):
         min_tokens=request.min_tokens
     )
     return SummaryResponse(summary=summary)
+
+
+class GECRequest(BaseModel):
+    text: str
+    max_tokens: int = 128
+
+class GECResponse(BaseModel):
+    corrected_text: str
+
+@router.post("/grammar_correct", response_model=GECResponse)
+def grammar_correct(request: GECRequest):
+    corrected = gec.correct_grammar(
+        request.text,
+        max_tokens=request.max_tokens
+    )
+    return GECResponse(corrected_text=corrected)
