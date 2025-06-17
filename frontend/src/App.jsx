@@ -12,6 +12,10 @@ function App() {
   const [activeTool, setActiveTool] = useState("GEC");
   const [loading, setLoading] = useState(false);
 
+  const countTokens = (text) => {
+    return text.trim().split(/\s+/).length;
+  };
+
   const handleToolSelect = async (tool) => {
     setActiveTool(tool);
     setScoreData(null);
@@ -20,6 +24,23 @@ function App() {
     if (!inputText.trim()) {
       setOutputText("Please enter some text.");
       return;
+    }
+
+    const tokens = countTokens(inputText);
+
+    if (tool === "Summarization" || tool === "Score") {
+      if (tokens < 30) {
+        setOutputText(
+          `"${tool}" requires at least 30 tokens. You have ${tokens}.`
+        );
+        return;
+      }
+      if (tokens > 500) {
+        setOutputText(
+          `"${tool}" supports up to 500 tokens. You have ${tokens}.`
+        );
+        return;
+      }
     }
 
     setLoading(true);
