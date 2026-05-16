@@ -5,18 +5,36 @@ import nltk
 from nltk.tokenize import sent_tokenize, word_tokenize
 import logging
 
+from app.core.config import LANGUAGE_TOOL_MODE
+
 # Download NLTK data once
 nltk.download("punkt", quiet=True)
+nltk.download("punkt_tab", quiet=True)
 
 # Initialize heavy objects globally (reused across requests)
-tool = language_tool_python.LanguageTool('en-US')
+tool = None
 spell = SpellChecker()
 
 # Set up logger
 logger = logging.getLogger(__name__)
 
+def get_language_tool():
+    global tool
+    if tool is not None:
+        return tool
+
+    if LANGUAGE_TOOL_MODE == "local":
+        tool = language_tool_python.LanguageTool("en-US")
+    else:
+        tool = language_tool_python.LanguageToolPublicAPI("en-US")
+    return tool
+
 def compute_grammar_score(text):
-    matches = tool.check(text)
+    try:
+        matches = get_language_tool().check(text)
+    except Exception as exc:
+        logger.warning("Grammar checker unavailable: %s", exc)
+        matches = []
     num_errors = len(matches)
     words = word_tokenize(text)
     num_words = len(words)

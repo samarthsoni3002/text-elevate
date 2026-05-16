@@ -1,10 +1,20 @@
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
+from app.core.config import SUMMARY_MODEL_NAME
 
-tokenizer = AutoTokenizer.from_pretrained("t5-small")
-model = AutoModelForSeq2SeqLM.from_pretrained("t5-small")
+tokenizer = None
+model = None
+
+def get_summary_model():
+    global tokenizer, model
+    if tokenizer is None:
+        tokenizer = AutoTokenizer.from_pretrained(SUMMARY_MODEL_NAME)
+    if model is None:
+        model = AutoModelForSeq2SeqLM.from_pretrained(SUMMARY_MODEL_NAME)
+    return tokenizer, model
 
 def generate_summary(text: str, max_tokens: int = 1000, min_tokens: int = 30) -> str:
+    tokenizer, model = get_summary_model()
 
     input_text = "summarize: " + text.strip()
 
